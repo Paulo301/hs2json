@@ -23,12 +23,6 @@ renderJValue (JObject obj) = series '{' '}' field obj
                           <> text ": "
                           <> renderJValue val
 
-string :: String -> Doc
-string = enclose '"' '"' . hcat . map oneChar
-
-enclose :: Char -> Char -> Doc -> Doc
-enclose left right x = char left <> x <> char right
-
 oneChar :: Char -> Doc
 oneChar c = case lookup c simpleEscapes of
               Just r -> text r

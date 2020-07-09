@@ -4,9 +4,9 @@ module PrettyJSON
     ) where
 
 import Numeric (showHex)
+import Prelude hiding ((<>))
 import Data.Char (ord)
 import Data.Bits (shiftR, (.&.))
-
 import SimpleJSON (JValue(..))
 import Prettify (Doc, (<>), char, double, fsep, hcat, punctuate, text,
                  compact, pretty)
@@ -22,6 +22,13 @@ renderJValue (JObject obj) = series '{' '}' field obj
     where field (name,val) = string name
                           <> text ": "
                           <> renderJValue val
+
+
+string :: String -> Doc
+string = enclose '"' '"' . hcat . map oneChar
+
+enclose :: Char -> Char -> Doc -> Doc
+enclose left right x = char left <> x <> char right
 
 oneChar :: Char -> Doc
 oneChar c = case lookup c simpleEscapes of
